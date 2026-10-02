@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[STORE NAME] — Premium Spirits & Wines | [TOWN NAME]</title>
+<meta name="description" content="Order quality wines, spirits & beers on WhatsApp. Fast local delivery until 6 PM. 18+ only.">
+<meta name="color-scheme" content="dark light">
+<script>
+/* Set theme before first paint: saved choice, else the device setting */
+(function(){var t=null;try{t=localStorage.getItem("theme")}catch(e){}
+if(!t)t=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";
+document.documentElement.dataset.theme=t;})();
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+<script>
+tailwind.config = { theme: { extend: {
+  fontFamily: { serif:['"Playfair Display"','serif'], script:['"Great Vibes"','cursive'] }
+} } }
+</script>
+<style>
+  /* ---------- Theme tokens ---------- */
+  :root, :root[data-theme="dark"] {
+    --bg:#0a0a0a; --bg-blur:rgba(10,10,10,.95); --surface:#121212; --surface2:#1c1c1c;
+    --text:#f5ead6; --muted:#a3a3a3; --accent:#d4af37; --accent-bg:#d4af37; --accent-on:#000;
+    --line:rgba(212,175,55,.18); --line-strong:rgba(212,175,55,.45);
+    --input:#171717; --input-line:#404040; --glow:rgba(212,175,55,.12); --wa-text:#4ade80;
+    --shadow:none; color-scheme:dark;
+  }
+  :root[data-theme="light"] {
+    --bg:#faf6ec; --bg-blur:rgba(250,246,236,.95); --surface:#ffffff; --surface2:#f1e9d6;
+    --text:#1c1710; --muted:#6b6355; --accent:#8a6a12; --accent-bg:#d4af37; --accent-on:#000;
+    --line:rgba(138,106,18,.22); --line-strong:rgba(138,106,18,.55);
+    --input:#ffffff; --input-line:#d6cbb0; --glow:rgba(184,144,31,.16); --wa-text:#15803d;
+    --shadow:0 1px 3px rgba(60,45,10,.10); color-scheme:light;
+  }
+  body { background:var(--bg); color:var(--text); }
+  .bg-page { background:var(--bg); }
+  .bg-blur { background:var(--bg-blur); backdrop-filter:blur(8px); }
+  .bg-surface { background:var(--surface); }
+  .bg-surface2 { background:var(--surface2); }
+  .t-main { color:var(--text); } .t-muted { color:var(--muted); } .t-accent { color:var(--accent); }
+  .t-wa { color:var(--wa-text); }
+  .b-soft { border:1px solid var(--line); } .b-strong { border:1px solid var(--line-strong); }
+  .bt-soft { border-top:1px solid var(--line); } .bb-soft { border-bottom:1px solid var(--line); }
+  .bl-soft { border-left:1px solid var(--line-strong); } .br-soft { border-right:1px solid var(--line-strong); }
+  .btn-gold { background:var(--accent-bg); color:var(--accent-on); }
+  .btn-gold:hover { filter:brightness(1.08); }
+  .btn-outline-wa { border:1px solid #16a34a; color:var(--wa-text); }
+  .btn-outline-wa:hover { background:#16a34a; color:#fff; }
+  .field { background:var(--input); border:1px solid var(--input-line); color:var(--text); }
+  .field:focus { border-color:var(--accent); }
+  ::placeholder { color:var(--muted); opacity:.7; }
+  .gold-line { background:linear-gradient(90deg,transparent,var(--accent-bg),transparent); height:1px; }
+  .glow { background:radial-gradient(ellipse at center,var(--glow),transparent 65%); }
+
+  .card { background:var(--surface); border:1px solid var(--line); box-shadow:var(--shadow); transition:transform .25s ease,border-color .25s ease; }
+  .card:hover { border-color:var(--accent); transform:translateY(-3px); }
+  .imgbox { background:#fff; border-radius:12px; padding:6px; }
+
+  .tab { border:1px solid var(--line-strong); color:var(--text); transition:all .2s ease; }
+  .tab:hover { border-color:var(--accent); color:var(--accent); }
+  .tab-active, .tab-active:hover { background:var(--accent-bg); color:#000; border-color:var(--accent-bg); font-weight:600; }
+  .menu-item { transition:background .2s ease; }
+  .menu-item:hover { background:var(--surface2); }
+  .menu-active, .menu-active:hover { background:var(--accent-bg); color:#000; font-weight:600; }
+
+  .no-scrollbar { scrollbar-width:none; } .no-scrollbar::-webkit-scrollbar { display:none; }
+  .panel { transition:transform .3s ease; }
+  #shop { scroll-margin-top:120px; }
+  :focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  @media (prefers-reduced-motion:reduce) { .panel, .card, .tab { transition:none; } }
+</style>
+</head>
+<body class="font-serif">
+
+<!-- ============ AGE GATE ============ -->
+<div id="ageGate" class="fixed inset-0 z-[60] bg-black/95 flex items-center justify-center p-4">
+  <div class="max-w-sm w-full bg-surface b-strong rounded-2xl p-8 text-center">
+    <div class="text-5xl mb-3">🔞</div>
+    <h1 class="text-2xl font-bold mb-2 t-main">Are you 18 or older?</h1>
+    <p class="t-muted text-sm mb-6 font-sans">This website sells alcoholic beverages. You must be of legal drinking age to enter.</p>
+    <div class="flex gap-3">
+      <button onclick="enterSite(true)" class="flex-1 btn-gold font-semibold py-3 rounded-xl transition font-sans">Yes, I'm 18+</button>
+      <button onclick="enterSite(false)" class="flex-1 bg-surface2 t-muted py-3 rounded-xl transition font-sans">No</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ HEADER + CATEGORY BAR (sticky) ============ -->
+<div class="sticky top-0 z-40 bg-blur bb-soft">
+  <header>
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-3">
+      <button id="menuBtn" class="shrink-0 bg-surface b-strong hover:border-[var(--accent)] rounded-full w-11 h-11 flex items-center justify-center text-xl t-main transition" aria-label="Open menu">☰</button>
+      <a href="#all" class="hidden sm:flex items-center gap-2 shrink-0">
+        <span class="text-2xl">🥃</span>
+        <span class="text-lg font-bold tracking-widest hidden md:block t-main">[STORE NAME]</span>
+      </a>
+      <div class="flex-1 min-w-0 relative">
+        <input id="search" type="text" placeholder="Search whisky, wine, beer…" aria-label="Search products"
+          class="field w-full rounded-full py-2.5 pl-11 pr-4 text-sm outline-none transition font-sans">
+        <svg class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 t-muted" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </div>
+      <button class="themeBtn hidden sm:flex shrink-0 bg-surface b-strong hover:border-[var(--accent)] rounded-full w-11 h-11 items-center justify-center text-lg transition" aria-label="Toggle dark or light mode"></button>
+      <button id="cartBtn" class="relative shrink-0 bg-surface b-strong hover:border-[var(--accent)] rounded-full w-11 h-11 flex items-center justify-center text-xl transition" aria-label="Open cart">
+        🛒
+        <span id="cartCount" class="hidden absolute -top-1 -right-1 btn-gold text-[11px] font-sans font-bold rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center">0</span>
+      </button>
+      <a class="wa-link shrink-0 bg-green-700 hover:bg-green-600 text-white text-sm font-semibold px-4 py-2.5 rounded-full transition font-sans hidden lg:block" target="_blank" rel="noopener">Order on WhatsApp</a>
+    </div>
+  </header>
+  <nav aria-label="Categories" class="bt-soft">
+    <div id="tabs" class="relative max-w-6xl mx-auto px-4 py-2 flex gap-2 overflow-x-auto no-scrollbar font-sans"></div>
+  </nav>
+</div>
+
+<!-- ============ HERO (All view only) ============ -->
+<section id="hero" class="relative overflow-hidden">
+  <div class="absolute inset-0 glow"></div>
+  <div class="relative max-w-6xl mx-auto px-4 py-20 md:py-28 text-center">
+    <p class="font-script text-3xl md:text-4xl t-accent mb-2">Wine &amp; Spirits</p>
+    <h1 class="text-5xl md:text-7xl font-black tracking-wide mb-6 t-main">THE FINEST<br>COLLECTION</h1>
+    <div class="gold-line w-48 mx-auto mb-8"></div>
+    <p class="t-muted max-w-xl mx-auto mb-10 font-sans text-sm md:text-base">Add your favourites to the cart and send your order on WhatsApp. Pay on delivery. Delivering across [TOWN NAME] until 6 PM daily.</p>
+    <div class="flex flex-wrap justify-center gap-4 font-sans">
+      <a id="browseBtn" href="#all" class="btn-gold font-semibold px-8 py-3 rounded-full transition">Browse Products</a>
+      <a class="wa-link btn-outline-wa font-semibold px-8 py-3 rounded-full transition" target="_blank" rel="noopener">WhatsApp Us</a>
+    </div>
+    <div class="flex flex-wrap justify-center gap-6 mt-10 text-sm t-muted font-sans">
+      <span>🚚 Same-day delivery</span><span>💵 Pay on delivery</span><span>🔞 18+ only</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SHOP ============ -->
+<section id="shop" class="max-w-6xl mx-auto px-4 pt-10 pb-16">
+  <div id="shopHead" class="text-center mb-8"></div>
+  <p id="resultCount" class="text-center text-xs t-muted font-sans mb-6"></p>
+  <div id="grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+  <p id="noResults" class="hidden text-center t-muted font-sans py-10">No products found here. Try a different search, or <a class="wa-link t-accent underline" target="_blank" rel="noopener">ask us on WhatsApp</a>.</p>
+</section>
+
+<!-- ============ HOW IT WORKS (All view only) ============ -->
+<section id="how" class="bt-soft">
+  <div class="max-w-6xl mx-auto px-4 py-16">
+    <p class="font-script text-3xl t-accent text-center">Simple &amp; fast</p>
+    <h2 class="text-4xl font-black text-center mb-10 t-main">HOW ORDERING WORKS</h2>
+    <div class="grid md:grid-cols-3 gap-6 text-center font-sans">
+      <div class="bg-surface b-soft rounded-2xl p-6"><div class="text-3xl mb-3">1️⃣</div><h3 class="font-semibold mb-2 t-main">Pick your drinks</h3><p class="text-sm t-muted">Browse the catalog and tap "Add" on anything you like.</p></div>
+      <div class="bg-surface b-soft rounded-2xl p-6"><div class="text-3xl mb-3">2️⃣</div><h3 class="font-semibold mb-2 t-main">Send on WhatsApp</h3><p class="text-sm t-muted">Open your cart and send the order. We confirm price and delivery time in the chat.</p></div>
+      <div class="bg-surface b-soft rounded-2xl p-6"><div class="text-3xl mb-3">3️⃣</div><h3 class="font-semibold mb-2 t-main">Pay on delivery</h3><p class="text-sm t-muted">Delivered to your door. Pay cash or M-Pesa when it arrives.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INFO ============ -->
+<section class="bt-soft">
+  <div class="max-w-6xl mx-auto px-4 py-16 grid md:grid-cols-2 gap-8 font-sans">
+    <div class="bg-surface b-soft rounded-2xl p-8">
+      <h3 class="font-serif text-xl font-bold mb-4 t-main">🕐 Store Hours &amp; Delivery</h3>
+      <ul class="space-y-2 text-sm t-main">
+        <li><span class="t-muted">Mon–Sat:</span> 9:00 AM – 8:00 PM</li>
+        <li><span class="t-muted">Sunday:</span> 10:00 AM – 6:00 PM</li>
+        <li><span class="t-muted">Delivery:</span> Until 6:00 PM daily</li>
+        <li><span class="t-muted">Delivery fee:</span> [KES 50] within Embu Town</li>
+      </ul>
+    </div>
+    <div class="bg-surface b-soft rounded-2xl p-8">
+      <h3 class="font-serif text-xl font-bold mb-4 t-main">📍 Find Us</h3>
+      <p class="text-sm t-main mb-4">[Street / Landmark], [TOWN NAME]<br>Call/WhatsApp: <a class="wa-link t-wa" target="_blank" rel="noopener">+254 7XX XXX XXX</a></p>
+      <iframe>
+        src=""
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<footer class="bt-soft py-8 text-center text-sm t-muted font-sans">
+  <p>© 2026 [STORE NAME]. Please drink responsibly. 🔞 Strictly 18+.</p>
+</footer>
+
+<!-- Floating WhatsApp button -->
+<a class="wa-link fixed bottom-5 right-5 z-30 bg-green-600 hover:bg-green-700 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 32 32" class="w-7 h-7 fill-current"><path d="M16 3C9.4 3 4 8.3 4 14.9c0 2.6.8 5 2.3 7L4.5 28l6.3-1.7c1.9 1 4 1.6 5.2 1.6 6.6 0 12-5.3 12-11.9S22.6 3 16 3zm0 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4c-1-1.6-1.6-3.4-1.6-5.3C6.1 9.6 10.6 5.3 16 5.3s9.9 4.3 9.9 9.6-4.5 9.9-9.9 9.9zm5.4-7.3c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.6c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.6-.1-.1-.7-1.6-1-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.1 1.3 3.3c.1.2 2.3 3.5 5.5 4.9.8.3 1.4.5 1.9.7.8.2 1.5.2 2.1.1.6-.1 1.7-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>
+</a>
+
+<!-- ============ OVERLAY ============ -->
+<div id="overlay" class="hidden fixed inset-0 z-50 bg-black/60"></div>
+
+<!-- ============ SIDE MENU (left) ============ -->
+<aside id="menu" class="panel fixed top-0 left-0 z-50 h-full w-full max-w-xs bg-surface br-soft flex flex-col -translate-x-full font-sans" aria-label="Menu">
+  <div class="flex items-center justify-between p-4 bb-soft">
+    <h3 class="font-serif text-xl font-bold t-main">Menu</h3>
+    <button id="closeMenu" class="text-2xl t-muted hover:text-[var(--accent)]" aria-label="Close menu">&times;</button>
+  </div>
+  <div class="flex-1 overflow-y-auto p-3">
+    <p class="text-xs t-muted px-3 pb-2">Categories</p>
+    <div id="menuCats" class="space-y-1"></div>
+  </div>
+  <div class="p-4 bt-soft space-y-3">
+    <button class="themeBtnLabeled w-full flex items-center justify-between bg-surface2 rounded-xl px-4 py-3 text-sm t-main"></button>
+    <p class="text-xs t-muted">Mon–Sat 9 AM – 8 PM · Sun 10 AM – 6 PM<br>Delivery until 6 PM daily</p>
+    <a class="wa-link block text-center bg-green-700 hover:bg-green-600 text-white font-semibold py-3 rounded-xl transition" target="_blank" rel="noopener">Chat on WhatsApp</a>
+  </div>
+</aside>
+
+<!-- ============ CART DRAWER (right) ============ -->
+<aside id="drawer" class="panel fixed top-0 right-0 z-50 h-full w-full max-w-sm bg-surface bl-soft flex flex-col translate-x-full font-sans" aria-label="Cart">
+  <div class="flex items-center justify-between p-4 bb-soft">
+    <h3 class="font-serif text-xl font-bold t-main">Your Cart</h3>
+    <button id="closeCart" class="text-2xl t-muted hover:text-[var(--accent)]" aria-label="Close cart">&times;</button>
+  </div>
+  <div id="cartItems" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
+  <div class="p-4 bt-soft space-y-3">
+    <div class="flex justify-between text-sm"><span class="t-muted">Subtotal</span><span id="cartTotal" class="font-bold t-accent">KES 0</span></div>
+    <p class="text-xs t-muted">Delivery fee is confirmed on WhatsApp. Pay on delivery.</p>
+    <button id="checkoutBtn" class="w-full bg-green-700 hover:bg-green-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition">Send Order on WhatsApp</button>
+    <button id="clearBtn" class="w-full text-xs t-muted hover:text-[var(--accent)]">Clear cart</button>
+  </div>
+</aside>
+
+<script>
+/* ================== EDIT YOUR STORE HERE ==================
+   Photos: drop files into the "images" folder named after the product,
+   e.g. images/jameson.jpg, images/johnnie-walker-black.jpg (jpg, png or webp).
+   They appear automatically. To use a different file, set imgUrl on the product.
+   No photo found = the emoji shows instead.
+============================================================ */
+const WHATSAPP_NUMBER = "2547XXXXXXXX"; // <-- REPLACE (country code, no +)
+const CURRENCY = "KES";
+const AUTO_IMAGES = true;
+const IMAGE_FOLDER = "images";
+
+const CATEGORY_INFO = {
+  "Whisky": { emoji:"🥃", blurb:"Scotch, Irish and blended whiskies for sipping or mixing." },
+  "Vodka":  { emoji:"🍸", blurb:"Smooth, clean vodkas for cocktails and parties." },
+  "Beer":   { emoji:"🍺", blurb:"Cold lagers and imports, sold by the bottle." },
+  "Wine":   { emoji:"🍷", blurb:"Red, white and sweet wines for any table." },
+  "Gin":    { emoji:"🍹", blurb:"Crisp gins for a classic G&T." },
+  "Rum":    { emoji:"🏝️", blurb:"Dark and spiced rums." },
+};
+
+const PRODUCTS = [
+  { cat:"Whisky", name:"Jameson",                size:"750ml", price:2200, img:"🥃", badge:"Bestseller" },
+  { cat:"Whisky", name:"Johnnie Walker Black",   size:"750ml", price:3800, img:"🥃", badge:"Premium" },
+  { cat:"Vodka",  name:"Smirnoff Red",           size:"750ml", price:1800, img:"🍸" },
+  { cat:"Vodka",  name:"Absolut",                size:"750ml", price:2500, img:"🍸", badge:"New" },
+  { cat:"Beer",   name:"Tusker Lager",           size:"500ml", price:300,  img:"🍺", badge:"Bestseller" },
+  { cat:"Beer",   name:"Heineken",               size:"330ml", price:350,  img:"🍺" },
+  { cat:"Wine",   name:"Four Cousins Sweet Red", size:"750ml", price:1400, img:"🍷" },
+  { cat:"Wine",   name:"Nederburg",              size:"750ml", price:1600, img:"🍷", badge:"New" },
+  { cat:"Gin",    name:"Gilbey's",               size:"750ml", price:1500, img:"🍹" },
+  { cat:"Rum",    name:"Captain Morgan",         size:"750ml", price:2000, img:"🏝️" },
+];
+/* =========================================================== */
+
+const $ = id => document.getElementById(id);
+const fmt = n => `${CURRENCY} ${n.toLocaleString()}`;
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+
+/* ---------- WhatsApp links ---------- */
+const waBase = `https://wa.me/${WHATSAPP_NUMBER}`;
+document.querySelectorAll(".wa-link").forEach(a => a.href = `${waBase}?text=${encodeURIComponent("Hi! I'd like to place an order.")}`);
+
+/* ---------- Age gate ---------- */
+function enterSite(ok){
+  if(ok){ try{ localStorage.setItem("age_ok","1"); }catch(e){} $("ageGate").style.display="none"; }
+  else { window.location.href = "https://www.google.com"; }
+}
+try{ if(localStorage.getItem("age_ok")) $("ageGate").style.display="none"; }catch(e){}
+
+/* ---------- Theme ---------- */
+function themeNow(){ return document.documentElement.dataset.theme; }
+function paintThemeButtons(){
+  const dark = themeNow()==="dark";
+  document.querySelectorAll(".themeBtn").forEach(b => b.textContent = dark ? "☀️" : "🌙");
+  document.querySelectorAll(".themeBtnLabeled").forEach(b => b.innerHTML = `<span>${dark ? "Switch to light mode" : "Switch to dark mode"}</span><span>${dark ? "☀️" : "🌙"}</span>`);
+}
+function setTheme(t, save){
+  document.documentElement.dataset.theme = t;
+  if(save){ try{ localStorage.setItem("theme", t); }catch(e){} }
+  paintThemeButtons();
+}
+document.querySelectorAll(".themeBtn, .themeBtnLabeled").forEach(b => b.onclick = () => setTheme(themeNow()==="dark" ? "light" : "dark", true));
+window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", e => {
+  let saved = null; try{ saved = localStorage.getItem("theme"); }catch(err){}
+  if(!saved) setTheme(e.matches ? "light" : "dark", false);
+});
+paintThemeButtons();
+
+/* ---------- Panels (menu + cart) ---------- */
+function openPanel(id, hiddenClass){
+  $("overlay").classList.remove("hidden");
+  $(id).classList.remove(hiddenClass);
+  document.body.classList.add("overflow-hidden");
+}
+function closePanels(){
+  $("overlay").classList.add("hidden");
+  $("menu").classList.add("-translate-x-full");
+  $("drawer").classList.add("translate-x-full");
+  document.body.classList.remove("overflow-hidden");
+}
+$("menuBtn").onclick = () => openPanel("menu","-translate-x-full");
+$("cartBtn").onclick = () => openPanel("drawer","translate-x-full");
+$("closeMenu").onclick = $("closeCart").onclick = $("overlay").onclick = closePanels;
+document.addEventListener("keydown", e => { if(e.key==="Escape") closePanels(); });
+
+/* ---------- Cart ---------- */
+let cart = {};
+try{ cart = JSON.parse(localStorage.getItem("cart")||"{}"); }catch(e){}
+Object.keys(cart).forEach(k => { if(!PRODUCTS[k]) delete cart[k]; });
+const saveCart = () => { try{ localStorage.setItem("cart", JSON.stringify(cart)); }catch(e){} };
+function addToCart(i){ cart[i] = (cart[i]||0) + 1; saveCart(); renderCart(); }
+function changeQty(i, d){ cart[i] = (cart[i]||0) + d; if(cart[i] <= 0) delete cart[i]; saveCart(); renderCart(); }
+
+function renderCart(){
+  const ids = Object.keys(cart);
+  const count = ids.reduce((s,i)=>s+cart[i],0);
+  const total = ids.reduce((s,i)=>s+cart[i]*PRODUCTS[i].price,0);
+  $("cartCount").textContent = count;
+  $("cartCount").classList.toggle("hidden", count===0);
+  $("cartTotal").textContent = fmt(total);
+  $("checkoutBtn").disabled = count===0;
+  $("cartItems").innerHTML = ids.length ? ids.map(i=>{
+    const p = PRODUCTS[i];
+    return `<div class="flex items-center gap-3 bg-surface2 rounded-xl p-3">
+      <div class="text-3xl">${p.img}</div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-semibold t-main truncate">${p.name}</p>
+        <p class="text-xs t-muted">${p.size} · ${fmt(p.price)}</p>
+      </div>
+      <div class="flex items-center gap-2 t-main">
+        <button data-dec="${i}" class="w-7 h-7 rounded-full b-strong" aria-label="Remove one">−</button>
+        <span class="text-sm w-5 text-center">${cart[i]}</span>
+        <button data-inc="${i}" class="w-7 h-7 rounded-full b-strong" aria-label="Add one">+</button>
+      </div>
+    </div>`;
+  }).join("") : `<p class="text-center t-muted text-sm py-10">Your cart is empty.</p>`;
+}
+$("cartItems").addEventListener("click", e=>{
+  const inc = e.target.closest("[data-inc]"), dec = e.target.closest("[data-dec]");
+  if(inc) changeQty(inc.dataset.inc, 1);
+  if(dec) changeQty(dec.dataset.dec, -1);
+});
+$("clearBtn").onclick = () => { cart = {}; saveCart(); renderCart(); };
+$("checkoutBtn").onclick = () => {
+  const ids = Object.keys(cart);
+  if(!ids.length) return;
+  const lines = ids.map(i => `• ${cart[i]} x ${PRODUCTS[i].name} (${PRODUCTS[i].size}) — ${fmt(cart[i]*PRODUCTS[i].price)}`);
+  const total = ids.reduce((s,i)=>s+cart[i]*PRODUCTS[i].price,0);
+  const msg = `Hi! I'd like to order:\n${lines.join("\n")}\n\nSubtotal: ${fmt(total)} (excl. delivery)\nPlease confirm availability & delivery time. My location: `;
+  window.open(`${waBase}?text=${encodeURIComponent(msg)}`, "_blank");
+};
+
+/* ---------- Categories + routing (#all, #whisky, #wine ...) ---------- */
+const cats = [...new Set(PRODUCTS.map(p=>p.cat))];
+const catBySlug = {}; cats.forEach(c => catBySlug[slug(c)] = c);
+const infoFor = c => CATEGORY_INFO[c] || { emoji:"🍾", blurb:"" };
+const countFor = c => c==="all" ? PRODUCTS.length : PRODUCTS.filter(p=>p.cat===catBySlug[c]).length;
+const routes = [{ id:"all", label:"All", emoji:"🍾" }, ...cats.map(c => ({ id:slug(c), label:c, emoji:infoFor(c).emoji }))];
+const baseTitle = document.title;
+let route = "all";
+
+function parseRoute(){
+  const h = decodeURIComponent(location.hash.slice(1)).toLowerCase();
+  return catBySlug[h] ? h : "all";
+}
+function go(id){ if(parseRoute()===id && location.hash.slice(1)===id) apply(true); else location.hash = id; }
+
+function renderNav(){
+  $("tabs").innerHTML = routes.map(r =>
+    `<button data-route="${r.id}" class="tab shrink-0 whitespace-nowrap px-4 py-2 rounded-full text-sm ${r.id===route?"tab-active":""}" ${r.id===route?'aria-current="page"':""}>${r.emoji} ${r.label} <span class="opacity-60 text-xs">${countFor(r.id)}</span></button>`
+  ).join("");
+  $("menuCats").innerHTML = routes.map(r =>
+    `<button data-route="${r.id}" class="menu-item w-full flex items-center justify-between text-left px-4 py-3 rounded-xl t-main ${r.id===route?"menu-active":""}"><span>${r.emoji} ${r.label}</span><span class="text-xs opacity-60">${countFor(r.id)}</span></button>`
+  ).join("");
+  const active = $("tabs").querySelector(".tab-active");
+  if(active) $("tabs").scrollTo({ left: active.offsetLeft - $("tabs").clientWidth/2 + active.clientWidth/2 });
+}
+document.addEventListener("click", e=>{
+  const b = e.target.closest("[data-route]");
+  if(!b) return;
+  closePanels();
+  go(b.dataset.route);
+});
+
+function renderHead(){
+  if(route==="all"){
+    $("shopHead").innerHTML = `<p class="font-script text-3xl t-accent">Browse our</p><h2 class="text-4xl font-black t-main">PRODUCTS</h2>`;
+  } else {
+    const c = catBySlug[route], info = infoFor(c);
+    $("shopHead").innerHTML = `<p class="font-script text-3xl t-accent">Our collection of</p><h2 class="text-4xl font-black t-main">${info.emoji} ${c.toUpperCase()}</h2>${info.blurb ? `<p class="t-muted font-sans text-sm mt-3 max-w-md mx-auto">${info.blurb}</p>` : ""}`;
+  }
+}
+
+function apply(scroll){
+  route = parseRoute();
+  $("hero").classList.toggle("hidden", route!=="all");
+  $("how").classList.toggle("hidden", route!=="all");
+  document.title = route==="all" ? baseTitle : `${catBySlug[route]} — ${baseTitle}`;
+  renderNav(); renderHead(); render();
+  if(scroll){
+    if(route==="all") window.scrollTo({ top:0, behavior:"smooth" });
+    else $("shop").scrollIntoView({ behavior:"smooth", block:"start" });
+  }
+}
+window.addEventListener("hashchange", () => apply(true));
+$("browseBtn").onclick = e => { e.preventDefault(); if(route!=="all") go("all"); else $("shop").scrollIntoView({ behavior:"smooth" }); };
+
+/* ---------- Product grid ---------- */
+const badgeColors = { "Bestseller":"btn-gold", "New":"bg-green-700 text-white", "Premium":"bg-purple-800 text-white" };
+
+function visualFor(p){
+  const srcs = p.imgUrl ? [p.imgUrl] : (AUTO_IMAGES ? ["jpg","png","webp"].map(x => `${IMAGE_FOLDER}/${slug(p.name)}.${x}`) : []);
+  if(!srcs.length) return `<div class="h-32 flex items-center justify-center text-5xl my-3">${p.img}</div>`;
+  return `<div class="visual imgbox h-32 flex items-center justify-center my-3" data-emoji="${p.img}">
+    <img src="${srcs[0]}" data-srcs="${srcs.join("|")}" data-i="0" alt="${p.name}" loading="lazy" class="max-h-full max-w-full object-contain">
+  </div>`;
+}
+
+function render(){
+  const q = $("search").value.trim().toLowerCase();
+  const list = PRODUCTS.map((p,i)=>({p,i})).filter(({p}) =>
+    (route==="all" || slug(p.cat)===route) &&
+    (q==="" || p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q))
+  );
+  const grid = $("grid");
+  grid.innerHTML = "";
+  $("noResults").classList.toggle("hidden", list.length>0);
+  $("resultCount").textContent = list.length ? `${list.length} product${list.length>1?"s":""}` : "";
+  list.forEach(({p,i})=>{
+    const card = document.createElement("div");
+    card.className = "card rounded-2xl p-4 flex flex-col";
+    card.innerHTML = `
+      ${p.badge ? `<span class="self-start text-[10px] font-sans font-bold uppercase tracking-wide px-2 py-0.5 rounded-full mb-2 ${badgeColors[p.badge]||"bg-neutral-700 text-white"}">${p.badge}</span>` : "<span class='mb-2 h-[22px]'></span>"}
+      ${visualFor(p)}
+      <p class="text-xs t-accent uppercase tracking-wide font-sans">${p.cat}</p>
+      <h3 class="font-semibold mt-1 t-main">${p.name}</h3>
+      <p class="text-sm t-muted font-sans">${p.size}</p>
+      <div class="mt-auto pt-3 flex items-center justify-between font-sans">
+        <span class="font-bold t-accent">${fmt(p.price)}</span>
+        <button data-add="${i}" class="bg-green-700 hover:bg-green-600 text-white text-xs font-semibold px-3 py-2 rounded-full transition">Add</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+/* Try jpg, then png, then webp; fall back to the emoji */
+$("grid").addEventListener("error", e=>{
+  const img = e.target;
+  if(img.tagName !== "IMG") return;
+  const srcs = img.dataset.srcs.split("|");
+  const next = +img.dataset.i + 1;
+  if(next < srcs.length){ img.dataset.i = next; img.src = srcs[next]; }
+  else { const box = img.parentElement; box.classList.remove("imgbox"); box.textContent = box.dataset.emoji; box.classList.add("text-5xl"); }
+}, true);
+
+$("grid").addEventListener("click", e=>{
+  const b = e.target.closest("[data-add]");
+  if(!b) return;
+  addToCart(b.dataset.add);
+  b.textContent = "Added ✓";
+  setTimeout(()=>{ b.textContent = "Add"; }, 900);
+});
+
+$("search").addEventListener("input", render);
+
+/* ---------- Init ---------- */
+apply(false);
+renderCart();
+</script>
+</body>
+</html>
