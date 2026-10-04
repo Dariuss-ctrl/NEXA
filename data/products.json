@@ -1,0 +1,100 @@
+{
+  "_readme": "Edit this file to change the catalogue. Set \"sample\" to false once the products, prices and stock are real. stock: a number of units (0 = out of stock); leave it out to not track stock. image: path like images/products/jameson.webp (optional).",
+  "sample": true,
+  "categories": ["Whisky", "Gin", "Vodka", "Rum", "Wine", "Beer"],
+  "products": [
+    {
+      "id": "jw-black", "name": "Johnnie Walker Black Label", "cat": "Whisky", "popular": true,
+      "desc": "Blended Scotch whisky with smoky, rich and smooth depth.",
+      "sizes": [
+        { "label": "350ml", "price": 1600, "stock": 8 },
+        { "label": "750ml", "price": 2900, "stock": 12 },
+        { "label": "1L", "price": 3800, "stock": 4 }
+      ]
+    },
+    {
+      "id": "jameson", "name": "Jameson Irish Whiskey", "cat": "Whisky", "popular": true,
+      "desc": "Triple-distilled Irish whiskey, light and smooth.",
+      "sizes": [
+        { "label": "350ml", "price": 1300, "stock": 10 },
+        { "label": "750ml", "price": 2500, "stock": 15 }
+      ]
+    },
+    {
+      "id": "jack", "name": "Jack Daniel's Old No.7", "cat": "Whisky", "popular": true,
+      "desc": "Tennessee whiskey, charcoal mellowed.",
+      "sizes": [{ "label": "750ml", "price": 2800, "stock": 6 }]
+    },
+    {
+      "id": "bw", "name": "Black & White Scotch", "cat": "Whisky",
+      "desc": "Everyday blended Scotch.",
+      "sizes": [{ "label": "750ml", "price": 1700, "stock": 9 }]
+    },
+    {
+      "id": "gilbeys", "name": "Gilbey's London Dry Gin", "cat": "Gin", "popular": true,
+      "desc": "Classic London dry gin with juniper and citrus.",
+      "sizes": [{ "label": "750ml", "price": 1500, "stock": 14 }]
+    },
+    {
+      "id": "tanq", "name": "Tanqueray London Dry", "cat": "Gin",
+      "desc": "Crisp, juniper-forward premium gin.",
+      "sizes": [{ "label": "750ml", "price": 3200, "stock": 2 }]
+    },
+    {
+      "id": "smirnoff", "name": "Smirnoff Red Vodka", "cat": "Vodka", "popular": true,
+      "desc": "Triple-distilled, clean and smooth.",
+      "sizes": [
+        { "label": "250ml", "price": 500, "stock": 20 },
+        { "label": "750ml", "price": 1400, "stock": 18 }
+      ]
+    },
+    {
+      "id": "absolut", "name": "Absolut Vodka", "cat": "Vodka",
+      "desc": "Swedish vodka with a clean, full-bodied taste.",
+      "sizes": [{ "label": "750ml", "price": 2600, "stock": 0 }]
+    },
+    {
+      "id": "morgan", "name": "Captain Morgan Spiced Gold", "cat": "Rum",
+      "desc": "Spiced rum with vanilla and caramel notes.",
+      "sizes": [{ "label": "750ml", "price": 2200, "stock": 7 }]
+    },
+    {
+      "id": "bacardi", "name": "Bacardi Carta Blanca", "cat": "Rum",
+      "desc": "Light white rum, ideal for mixing.",
+      "sizes": [{ "label": "750ml", "price": 1900, "stock": 5 }]
+    },
+    {
+      "id": "fourcousins", "name": "Four Cousins Sweet Red", "cat": "Wine", "popular": true,
+      "desc": "Soft, fruity and sweet red wine.",
+      "sizes": [{ "label": "750ml", "price": 1300, "stock": 11 }]
+    },
+    {
+      "id": "drostdy", "name": "Drostdy-Hof Dry White", "cat": "Wine",
+      "desc": "Crisp, dry white wine.",
+      "sizes": [{ "label": "750ml", "price": 1150, "stock": 8 }]
+    },
+    {
+      "id": "tusker", "name": "Tusker Lager", "cat": "Beer", "popular": true,
+      "desc": "Kenya's classic lager.",
+      "sizes": [
+        { "label": "500ml", "price": 220, "stock": 48 },
+        { "label": "6-pack", "price": 1250, "stock": 10 }
+      ]
+    },
+    {
+      "id": "guinness", "name": "Guinness Stout", "cat": "Beer",
+      "desc": "Rich, roasted dark stout.",
+      "sizes": [{ "label": "500ml", "price": 260, "stock": 30 }]
+    },
+    {
+      "id": "heineken", "name": "Heineken", "cat": "Beer",
+      "desc": "Crisp premium lager.",
+      "sizes": [{ "label": "330ml", "price": 300, "stock": 3 }]
+    },
+    {
+      "id": "tuskermalt", "name": "Tusker Malt", "cat": "Beer",
+      "desc": "Full-bodied malt lager.",
+      "sizes": [{ "label": "330ml", "price": 240, "stock": 0 }]
+    }
+  ]
+}

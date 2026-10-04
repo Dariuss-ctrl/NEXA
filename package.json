@@ -1,27 +1,12 @@
 {
-  "name": "y",
-  "version": "1.0.0",
-  "description": "",
-  "keywords": [
-    "Nexa"
-  ],
-  "homepage": "https://github.com/darius-ctrl/NEXA#readme",
-  "bugs": {
-    "url": "https://github.com/darius-ctrl/NEXA/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/darius-ctrl/NEXA.git"
-  },
-  "license": "ISC",
-  "author": "darius-ctrl",
-  "type": "commonjs",
-  "main": "index.js",
+  "name": "nexa-lounge",
+  "version": "0.2.0",
+  "private": true,
+  "description": "NEXA LOUNGE: static drinks catalogue with WhatsApp ordering",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "npx serve .",
+    "validate": "node scripts/validate.mjs",
+    "check-launch": "node scripts/validate.mjs --launch"
   },
-  "dependencies": {
-    "@tailwindcss/cli": "^4.3.3",
-    "tailwindcss": "^4.3.3"
-  }
+  "engines": { "node": ">=18" }
 }
